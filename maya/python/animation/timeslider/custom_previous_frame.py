@@ -15,7 +15,6 @@
 def custom_previous_frame():
 	current  = cmds.currentTime(q=True)
 	min, max = cmds.playbackOptions(q=True,min=True), cmds.playbackOptions(q=True,max=True)
-	min     = cmds.playbackOptions(q=True,min=True)
 	cmds.undoInfo(stateWithoutFlush=False)
 	if current == min:
 		cmds.currentTime(max)

@@ -15,7 +15,6 @@
 def custom_next_frame():
 	current  = cmds.currentTime(q=True)
 	min, max = cmds.playbackOptions(q=True,min=True), cmds.playbackOptions(q=True,max=True)
-	min     = cmds.playbackOptions(q=True,min=True)
 	cmds.undoInfo(stateWithoutFlush=False)
 	if current == max:
 		cmds.currentTime(min)
