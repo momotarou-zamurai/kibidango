@@ -9,10 +9,13 @@
 # If you go to than the minimum frame, it will jump to the maximum frame.
 #
 # Run command.
-# custom_previous_frame()
+# import custom_previous_frame
+# custom_previous_frame.main()
 #
 
-def custom_previous_frame():
+from maya import cmds
+
+def main():
 	current  = cmds.currentTime(q=True)
 	min, max = cmds.playbackOptions(q=True,min=True), cmds.playbackOptions(q=True,max=True)
 	cmds.undoInfo(stateWithoutFlush=False)

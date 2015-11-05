@@ -7,12 +7,15 @@
 # In this script, you can toggle the selection mask of objects .
 #
 # Run command.
-# toggle_sm_surface()
+# import toggle_sm_surface
+# toggle_sm_surface.main()
 #
 
 from maya import cmds, mel
 
-def toggle_sm_surface():
+dcc_ver = cmds.about(v=True)
+
+def main():
 	# The nurbs.
 	isNs   = False if cmds.selectType(q=True, ns=True) else True
 	# The poly.
@@ -22,10 +25,13 @@ def toggle_sm_surface():
 	# The plane.
 	isPln  = False if cmds.selectType(q=True, pl=True) else True
 	# The gpu chache.
-	isGUP  = 0 if mel.eval('selectType -q -byName "gpuCache";') else 1
+	isGPU  = 0
+	if '2013' in dcc_ver:
+		isGPU = 0 if mel.eval('selectType -q -byName "gpuCache";') else 1
 	
 	cmds.selectType(ns=isNs)
 	cmds.selectType(p=isPoly)
 	cmds.selectType(sd=isSd)
 	cmds.selectType(pl=isPln)
-	mel.eval('selectType -byName "gpuCache" %i;'%isGUP)
+	if '2013' in dcc_ver:
+		mel.eval('selectType -byName "gpuCache" %i;'%isGPU)

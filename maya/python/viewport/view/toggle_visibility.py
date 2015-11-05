@@ -7,12 +7,13 @@
 # In this script, you can toggle the visibility of objects .
 #
 # Run command.
-# toggle_visibility()
+# import toggle_visibility
+# toggle_visibility.main()
 #
 
 from maya import cmds
 
-def toggle_visibility():
+def main():
 	selected = cmds.ls(sl=True)
 	if selected:
 		for sel in selected:

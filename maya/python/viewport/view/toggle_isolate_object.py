@@ -11,15 +11,17 @@
 # 
 # 
 # Run command. -Defult
-# toggle_isolate_object()
+# import toggle_isolate_object
+# toggle_isolate_object.main()
 # 
 # Run extra command.
-# toggle_isolate_object(False)
+# import toggle_isolate_object
+# toggle_isolate_object.main(False)
 # 
 
 from maya import cmds, mel
 
-def toggle_isolate_object(b_isolate=True):
+def main(b_isolate=True):
 	active_panel = cmds.getPanel(wf=True)
 	model_panel  = cmds.getPanel(typ='modelPanel')
 	src_panel    = None
@@ -32,20 +34,21 @@ def toggle_isolate_object(b_isolate=True):
 		if b_isolate:
 			if iso_state == False:
 				isExist = False
-				cmds.isolateSelect(src_panel, state=True)
+				mel.eval('enableIsolateSelect "%s" 1;'%src_panel)
 			selected = cmds.ls(sl=True)
 			if selected:
 				view_object = cmds.isolateSelect(src_panel, q=True, vo=True)
-				set_members = cmds.sets(view_object, q=True)
-				if set_members == None:
-					set_members = []
-				for sel in selected:
-					cmds.select(sel,r=True)
-					if sel in set_members and isExist == True:
-						cmds.isolateSelect(src_panel, rs=True)
-					else:
-						cmds.isolateSelect(src_panel, addSelected=True)
-				cmds.isolateSelect(src_panel,u=True)
-				cmds.select(selected, r=True)
+				if view_object:
+					set_members = cmds.sets(view_object, q=True)
+					if set_members == None:
+						set_members = []
+					for sel in selected:
+						cmds.select(sel,r=True)
+						if sel in set_members and isExist == True:
+							cmds.isolateSelect(src_panel, rs=True)
+						else:
+							cmds.isolateSelect(src_panel, addSelected=True)
+					cmds.isolateSelect(src_panel,u=True)
+					cmds.select(selected, r=True)
 		elif b_isolate == False and iso_state:
 			cmds.isolateSelect(src_panel, state=False)
