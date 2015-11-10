@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # 
-# Author: Masahiro Ohmomo
+# Author   : Masahiro Ohmomo
+# DCC      : Maya
+# Version  : 2013 - Latest
+# Recommend: 2013
 # 
 # Description.
 # In this script, you can go to previous frame.
