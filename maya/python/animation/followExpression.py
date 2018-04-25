@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from maya import cmds
+
 ctrlShape = cmds.createNode('locator')
 ctrlTransform = cmds.listRelatives(ctrlShape,p=True,f=True)
 if isinstance(ctrlTransform,list):
