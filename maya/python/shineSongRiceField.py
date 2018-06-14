@@ -11,7 +11,7 @@ def editShaderValue():
     # 
     attributes = [
         'diffuse',
-        'colorR'
+        'colorR',
     ]
     
     anisotropicList = cmds.ls(typ='anisotropic') or []
