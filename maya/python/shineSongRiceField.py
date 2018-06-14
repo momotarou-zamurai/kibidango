@@ -12,8 +12,9 @@ def editShaderValue(attributes=[], value=.0):
     materials = cmds.ls(mat=True) or []
     selected = cmds.ls(sl=True) or []
     for mat in materials:
-        if not mat in selected:
-            continue
+        if selected:
+            if not mat in selected:
+                continue
         print '[ %s ]' % mat
         for attr in attributes:
             if cmds.attributeQuery(attr, n=mat, ex=True):
