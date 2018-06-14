@@ -76,7 +76,9 @@ for element in elements:
     temps = basename.split('.')
     extension = temps[-1]
     fileName = basename.replace('.%s' % extension, '')
-    newName = '_'.join([fileName, 'editMaterial%s' % today])
+    if re.search('editAMat', fileName):
+        fileName = fileName.split('_editAMat')[0]
+    newName = '_'.join([fileName, 'editAMat%s' % today])
     newFilePath = '%s%s.%s' % (targetFolderPath, newName, extension)
     
     cmds.file(rename=newFilePath)
