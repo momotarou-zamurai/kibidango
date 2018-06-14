@@ -5,14 +5,14 @@ import glob
 import datetime
 from maya import cmds, mel
 
-def editShaderValue():
+def editShaderValue(attributes=[]):
     # 
     # Input your target attribute.
     # 
-    attributes = [
-        'diffuse',
-        'colorR',
-    ]
+    # attributes = [
+    #     'diffuse',
+    #     'colorR',
+    # ]
     
     anisotropicList = cmds.ls(typ='anisotropic') or []
     for asl in anisotropicList:
@@ -34,52 +34,62 @@ def getLatestFile(dirPath='F:/', fileFilter='', fileExt='.mb'):
     latestFile = latestFile.replace(os.sep, '/')
     return latestFile
 
-# 
-# Input your root folder.
-# 
-rootPath = r'F:\aaa\bbb\ccc'
+def doIt(
+    rootPath = r'F:\aaa\bbb\ccc',
+    subFolderPath=r'hoge\scenes',
+    searchFileType='.mb',
+    editAttributes=['diffuse', 'colorR',],
+    saveFileType='.ma'
+):
+    # 
+    # Input your root folder.
+    # 
+    rootPath = rootPath
 
-# Get target folder.
-elements = glob.glob('%s/*' % rootPath)
+    # Get target folder.
+    elements = glob.glob('%s/*' % rootPath)
 
-# 
-# If you have subfolders, edit here.
-# 
-subFolderPath = r'hoge\scenes'
+    # 
+    # If you have subfolders, edit here.
+    # 
+    subFolderPath = subFolderPath
 
-# Get the date of today.
-today = datetime.datetime.today().strftime('%Y%m%d%H%M%S')
+    # Get the date of today.
+    today = datetime.datetime.today().strftime('%Y%m%d%H%M%S')
 
-for element in elements:
-    targetFolderPath = '/'.join([element, subFolderPath])
-    targetFolderPath = '%s/' % targetFolderPath
+    for element in elements:
+        targetFolderPath = '/'.join([element, subFolderPath])
+        targetFolderPath = '%s/' % targetFolderPath
 
-    # Get the latest file.
-    latestFile = getLatestFile(
-        dirPath=targetFolderPath,
-        fileFilter='',
-        fileExt='.mb'
-    )
-    
-    # File open.
-    cmds.file(
-        latestFile,
-        f=True,
-        o=True
-    )
+        # Get the latest file.
+        latestFile = getLatestFile(
+            dirPath=targetFolderPath,
+            fileFilter='',
+            fileExt=searchFileType
+        )
+        
+        # File open.
+        cmds.file(
+            latestFile,
+            f=True,
+            o=True
+        )
 
-    # Edit the material.
-    editShaderValue()
-    
-    # File save.
-    basename = os.path.basename(latestFile)
-    temps = basename.split('.')
-    extension = temps[-1]
-    fileName = basename.replace('.%s' % extension, '')
-    if re.search('editAMat', fileName):
-        fileName = fileName.split('_editAMat')[0]
-    newName = '_'.join([fileName, 'editAMat%s' % today])
-    newFilePath = '%s%s.%s' % (targetFolderPath, newName, extension)
-    
-    cmds.file(rename=newFilePath)
-    cmds.file(save=True, type="mayaBinary")
+        # Edit the material.
+        editShaderValue(attributes=editAttributes)
+        
+        # File save.
+        basename = os.path.basename(latestFile)
+        temps = basename.split('.')
+        extension = temps[-1]
+        fileName = basename.replace('.%s' % extension, '')
+        if re.search('editAMat', fileName):
+            fileName = fileName.split('_editAMat')[0]
+        newName = '_'.join([fileName, 'editAMat%s' % today])
+        newFilePath = '%s%s.%s' % (targetFolderPath, newName, extension)
+        
+        cmds.file(rename=newFilePath)
+        fileType = 'mayaAscii'
+        if saveFileType == '.mb':
+            fileType = 'mayaBinary'
+        cmds.file(save=True, type=fileType)
