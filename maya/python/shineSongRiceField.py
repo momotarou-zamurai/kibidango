@@ -1,6 +1,6 @@
 from maya import cmds, mel
 
-def editShaderValue(attributes=[]):
+def editShaderValue(attributes=[], value=.0):
     # 
     # Input your target attribute.
     # 
@@ -10,17 +10,21 @@ def editShaderValue(attributes=[]):
     # ]
     
     materials = cmds.ls(mat=True) or []
+    selected = cmds.ls(sl=True) or []
     for mat in materials:
+        if not mat in selected:
+            continue
         print '[ %s ]' % mat
         for attr in attributes:
             if cmds.attributeQuery(attr, n=mat, ex=True):
-                cmds.setAttr('%s.%s' % (mat, attr), .0)
-                print '\t%s >>> .0' % attr
+                cmds.setAttr('%s.%s' % (mat, attr), value)
+                print '\t%s >>> %s' % (attr, value)
 
 #
-# Single Command.
+# Command.
 #
 attributes = [
     'specularAnisotropy',
 ]
-editShaderValue(attributes=attributes)
+value = .0
+editShaderValue(attributes=attributes, value=value)
