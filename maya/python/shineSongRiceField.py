@@ -93,3 +93,24 @@ def doIt(
         if saveFileType == '.mb':
             fileType = 'mayaBinary'
         cmds.file(save=True, type=fileType)
+
+#
+# Edit.
+#
+rootPath       = r'D:\samurai\project\tempProjectA'
+subFolderPath  = r'hoge\scenes'
+editAttributes = [
+    'diffuse',
+    'colorR',
+]
+searchFileType = '.mb'
+saveFileType   = '.ma'
+
+# Doit.
+doIt(
+    rootPath = rootPath,
+    subFolderPath=subFolderPath,
+    searchFileType=searchFileType,
+    editAttributes=editAttributes,
+    saveFileType='.ma'
+)
