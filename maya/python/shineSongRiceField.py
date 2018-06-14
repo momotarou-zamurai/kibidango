@@ -14,12 +14,12 @@ def editShaderValue(attributes=[]):
     #     'colorR',
     # ]
     
-    anisotropicList = cmds.ls(typ='anisotropic') or []
-    for asl in anisotropicList:
-        print '[ %s ]' % asl
+    materials = cmds.ls(mat=True) or []
+    for mat in materials:
+        print '[ %s ]' % mat
         for attr in attributes:
-            if cmds.attributeQuery(attr, n=asl, ex=True):
-                cmds.setAttr('%s.%s' % (asl, attr), .0)
+            if cmds.attributeQuery(attr, n=mat, ex=True):
+                cmds.setAttr('%s.%s' % (mat, attr), .0)
                 print '\t%s >>> .0' % attr
 
 def getLatestFile(dirPath='F:/', fileFilter='', fileExt='.mb'):
@@ -94,19 +94,18 @@ def doIt(
             fileType = 'mayaBinary'
         cmds.file(save=True, type=fileType)
 
-#
-# Edit.
-#
-rootPath       = r'D:\samurai\project\tempProjectA'
+# 
+# Edit
+# 
+rootPath       = r'F:\ohmomo\project\tempProjectA'
 subFolderPath  = r'hoge\scenes'
 editAttributes = [
-    'diffuse',
-    'colorR',
+    'specularAnisotropy',
 ]
 searchFileType = '.mb'
 saveFileType   = '.ma'
 
-# Doit.
+# Batch mode. Auto save.
 doIt(
     rootPath = rootPath,
     subFolderPath=subFolderPath,
@@ -114,3 +113,12 @@ doIt(
     editAttributes=editAttributes,
     saveFileType='.ma'
 )
+
+
+#
+# Single Command.
+#
+attributes = [
+    'specularAnisotropy',
+]
+editShaderValue(attributes=attributes)
