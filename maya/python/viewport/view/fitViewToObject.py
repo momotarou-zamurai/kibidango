@@ -19,7 +19,10 @@
 
 import math
 import sys
-from maya import OpenMaya, OpenMayaUI, cmds
+from maya import OpenMaya
+from maya import OpenMayaUI
+from maya import cmds
+from maya import mel
 
 sys.dont_write_bytecode = True
 
@@ -42,8 +45,16 @@ def fitView():
     if not objects:
         return
 
+    panel = cmds.getPanel(wf=True)
+    modelPanels = cmds.getPanel(typ='modelPanel')
+    if not panel in modelPanels:
+        mel.eval('FrameSelected;')
+        return
+
     # View
     view = getActiveView()
+    if not view:
+        return
 
     # Camera.
     cam = OpenMaya.MDagPath()
